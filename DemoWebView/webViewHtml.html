@@ -1,0 +1,64 @@
+
+
+
+<!DOCTYPE html>
+<html>
+    <header><meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no'></header>
+    <body>
+        <script>
+            function setupWebViewJavascriptBridge(callback) {
+                if (window.WebViewJavascriptBridge) { return callback(WebViewJavascriptBridge); }
+                if (window.WVJBCallbacks) { return window.WVJBCallbacks.push(callback); }
+                window.WVJBCallbacks = [callback];
+                var WVJBIframe = document.createElement('iframe');
+                WVJBIframe.style.display = 'none';
+                WVJBIframe.src = 'https://__bridge_loaded__';
+                document.documentElement.appendChild(WVJBIframe);
+                setTimeout(function() { document.documentElement.removeChild(WVJBIframe) }, 0)
+            }
+        
+        setupWebViewJavascriptBridge(function(bridge) {
+                                     
+                                     /* Initialize your app here */
+                                     
+                                     
+                                     bridge.registerHandler('JS Echo', function(data, responseCallback) {
+                                                            alert("qpwww")
+                                                            console.log("JS Echo called with:", data)
+                                                            responseCallback(data)
+                                                            })
+                                     
+                                     
+                                     bridge.callHandler('ObjC Echo', {'key':'value'}, function responseCallback(responseData) {
+                                                        console.log("JS received response:", responseData)
+                                                        })
+                                     
+                                     bridge.registerHandler("replaceimage", function(data) {
+                                                            
+                                                            var index=data.indexOf(",")
+                                                            
+                                                            var messagereplace=data.substring(0,index)
+                                                            var messagepath=data.substring(index+1)
+                                                            
+                                                            messagereplace=messagereplace.replace('replaceimage',"")
+                                                            
+                                                            element=document.getElementById(messagereplace)
+<!--                                                            alert(messagepath)-->
+                                                            
+                                                            if (element.src.match("loading")) {
+                                                            element.src = messagepath
+                                                            }                                                
+                                                            if (responseCallback) {responseCallback("send Right back atcha")}
+                                                            })
+                                     
+                                     })
+                                     
+            </script>
+        
+        
+        <p>mainnews</p>
+        
+        <p> wo zenm mei xians</p>
+        
+    </body>
+</html>
